@@ -4,37 +4,57 @@ import BloodGroups from './BloodGroups';
 import Countries from './Countries';
 import Religions from './Religions';
 import States from './States';
+import * as yup from "yup";
+import "yup-phone-lite";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 
 
 const Register = () => {
-  const { register } = useForm();
+  const schema = yup.object().shape({
+    name: yup.string().required(),
+    age: yup.string().required(),
+    sex: yup.string().required(),
+    mobile: yup.string().phone("IN","Enter a valid indian number"),
+    emergency_contact : yup.string().phone("IN","Enter a valid indian number"),
+  })
+  const { register, handleSubmit, formState: {errors} } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmitHandler = (data) => {
+    console.log({ data });
+  };
   return (
     <div>
-        <form>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
             <h3><b><u>Personal Details</u></b></h3>
             <div className='row'>
                 <div className='col-md-4'>
                     <label htmlFor='Name' className='mx-4'>Name</label>
-                    <input type="text" {...register("name")} placeholder="Enter Name"></input>
+                    <input type="text" {...register("name")}  placeholder="Enter Name"></input>
+                    <p className='text-danger'>{errors.name?.message}</p>
                 </div>
                 <div className='col-md-4'>
                     <label htmlFor='Age' className='mx-4'>Date of Birth or Age</label>
                     <input type="text" {...register("age")} placeholder="DD/MM/YYYY or Age in Years"></input>
+                    <p className='text-danger'>{errors.age?.message}</p>
                 </div>
                 <div className='col-md-4'>
                     <label htmlFor='Sex' className='mx-4'>Sex</label>
                     <select {...register("sex")}>
-                        <option>Enter Sex</option>
+                        <option selected>Enter Sex</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
+                    <p className='text-danger'>{errors.sex?.message}</p>
                 </div>
             </div>
             <div className='row my-3'>
                 <div className='col-md-4'>
                     <label htmlFor='Mobile' className='mx-4'>Mobile</label>
                     <input type="text" {...register("mobile")} placeholder="Enter Mobile"></input>
+                    <p className='text-danger'>{errors.mobile?.message}</p>
                 </div>
                 <div className='col-md-8'>
                     <label htmlFor='Id' className='mx-4'>Govt Issued Id</label>
@@ -44,6 +64,7 @@ const Register = () => {
                         <option value="pan">pan</option>
                     </select>
                     <input type="text" {...register("id")}></input>
+                    <p className='text-danger'>{errors.id?.message}</p>
                 </div>
             </div>
             <h3><b><u>Contact Details</u></b></h3>
@@ -64,6 +85,7 @@ const Register = () => {
                 <div className='col-md-4'>
                     <label htmlFor='Emergency' className='mx-4'>Emergency Contact</label>
                     <input type="text" {...register("emergency_contact")}></input>
+                    <p className='text-danger'>{errors.emergency_contact?.message}</p>
                 </div>
             </div>
             <h3><b><u>Address Details</u></b></h3>
