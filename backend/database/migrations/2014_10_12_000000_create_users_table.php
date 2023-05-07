@@ -14,10 +14,23 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('age');
+            $table->string('sex');
+            $table->unsignedBigInteger('mobile')->nullable();
+            $table->unsignedBigInteger('govt_id')->nullable();
+            $table->string('guardian_details')->nullable();
+            $table->string('email')->nullable();
+            $table->unsignedBigInteger('emergency_contact')->nullable();
+            $table->string('address')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->unsignedBigInteger('pincode')->nullable();
+            $table->string('occupation')->nullable();
+            $table->string('religion')->nullable();
+            $table->string('marital_status')->nullable();
+            $table->string('blood_group')->nullable();
+            $table->string('nationality')->nullable();
             $table->timestamps();
         });
     }
