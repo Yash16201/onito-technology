@@ -2,13 +2,14 @@ import {Routes, Route} from 'react-router-dom';
 import Register from './Components/Register';
 import Users from './Components/Users';
 import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from './Components/Navbar';
 function App() {
 
   return (
     <div>
-      <Register/>
+      <Navbar/>
         <Routes>
-          <Route path="/register" element={<Register/>}></Route>
+          <Route path="/" element={<Register/>}></Route>
           <Route path="/users" element={<Users/>}></Route>
       </Routes>
     </div>

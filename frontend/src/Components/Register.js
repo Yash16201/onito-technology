@@ -7,8 +7,7 @@ import States from './States';
 import * as yup from "yup";
 import "yup-phone-lite";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-
+import axios from 'axios';
 
 const Register = () => {
   const schema = yup.object().shape({
@@ -18,14 +17,51 @@ const Register = () => {
     mobile: yup.string().phone("IN","Enter a valid indian number"),
     emergency_contact : yup.string().phone("IN","Enter a valid indian number"),
   })
-  const { register, handleSubmit, formState: {errors} } = useForm({
+  const { register, handleSubmit ,formState: {errors} } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmitHandler = (data) => {
-    console.log({ data });
+  const onSubmitHandler = (fdata) => {
+    // e.preventDefault();
+    // console.log(register.age);
+    console.log(fdata.sex);
+    const data = new FormData();
+    data.append('name',fdata.name);
+    data.append('age',fdata.age);
+    data.append('sex',fdata.sex);
+    data.append('mobile',fdata.mobile);
+    data.append('govt_id',fdata.govt_id);
+    data.append('guardian_details',fdata.guardian_details);
+    data.append('email',fdata.email);
+    data.append('emergency_contact', fdata.emergency_contact);
+    data.append('address', fdata.address);
+    data.append('state', fdata.state);
+    data.append('city', fdata.city);
+    data.append('country', fdata.country);
+    data.append('pincode', fdata.pincode);  
+    data.append('occupation', fdata.occupation);
+    data.append('religion',fdata.religion);
+    data.append('marital_status',fdata.marital_status);
+    data.append('blood_group',fdata.blood_group);
+    data.append('nationality',fdata.nationality);
+    axios.post('http://127.0.0.1:8000/api/register',
+    {
+
+     headers : {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        'content-type': 'application/json'
+     }, 
+    "data":{'name':fdata.name,'age':fdata.age,'sex':fdata.sex,'mobile':fdata.mobile,'govt_id':fdata.id,'guardian_details':fdata.guardian_name,'email':fdata.email,'emergency_contact':fdata.emergency_contact,'address':fdata.address,'state':fdata.state,'city':fdata.city,'country':fdata.country,'pincode':fdata.pincode,'occupation':fdata.occupation,'religion':fdata.religion,'marital_status':fdata.marital_status,'blood_group':fdata.blood_group,'nationality':fdata.nationality}
+    }).then((response)=>{
+        console.log(response);
+        // var usersGet = JSON.stringify(response.data.Users);
+        
+    }).catch((e) => {
+        console.log(e);
+    });
   };
   return (
-    <div>
+    <div className='my-3'>
         <form onSubmit={handleSubmit(onSubmitHandler)}>
             <h3><b><u>Personal Details</u></b></h3>
             <div className='row'>
@@ -131,7 +167,7 @@ const Register = () => {
                 </div>
                 <div className='col-md-3'>
                     <label htmlFor='Martial' className='mx-2'>Martial Status</label>
-                    <select  {...register("martial_status")}>
+                    <select  {...register("marital_status")}>
                         <option value="married">Married</option>
                         <option value="unmarried">Unmarried</option>
                     </select>
